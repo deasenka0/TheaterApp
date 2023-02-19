@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+
+	<title>Show Details</title>
+	
+</h:head>
+<h:body>
+	<h1>Show Details</h1>
+	<h:form rendered="#{not empty showDetailsBean.show}">
+		<h:panelGrid columns="2">
+			<h:outputLabel for="title" value="Title:" />
+			<h:outputText id="title" value="#{showDetailsBean.show.play.title}" />
+
+			<h:outputLabel for="writer" value="Writer:" />
+			<h:outputText id="writer" value="#{showDetailsBean.show.play.writer}" />
+
+			<h:outputLabel for="director" value="Director:" />
+			<h:outputText id="director" value="#{showDetailsBean.show.play.director}" />
+
+			<h:outputLabel for="actors" value="Actors:" />
+			<h:outputText id="actors" value="#{showDetailsBean.show.play.actors}" />
+
+			<h:outputLabel for="theaterHall" value="Theater Hall:" />
+			<h:outputText id="theaterHall" value="#{showDetailsBean.show.theaterHall.name}" />
+
+			<h:outputLabel for="startTime" value="Start Time:" />
+			<h:outputText id="startTime" value="#{showDetailsBean.show.startTime}" />
+			
+			<h:panelGroup rendered="#{showDetailsBean.logged}">
+				<h:outputLabel for="seats" value="Select up to 5 seats:" />
+				<h:selectManyCheckbox id="seats" value="#{showDetailsBean.show.seats}" >
+					<f:selectItems value="#{showDetailsBean.availableSeats}" var="seat" itemValue="#{seat}" itemLabel="#{seat.seatNumber}" />
+				</h:selectManyCheckbox>
+				<h:inputHidden id="selectShowID" value="#{showDetailsBean.show.id}"></h:inputHidden>
+				<br/>
+				<h:commandButton  value="Reserve" action="#{showDetailsBean.reserveSeats}" rendered="#{not empty showDetailsBean.show.seats}" />
+				<h:message for="seats" />
+			</h:panelGroup>
+
+			<h:dataTable value="#{showDetailsBean.show.seats}" var="seat" style="border: 1px solid black;width:35%;">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Row" />
+					</f:facet>
+					<h:outputText value="#{seat.rowNumber}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Seat" />
+					</f:facet>
+					<h:outputText value="#{seat.seatNumber}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Available" />
+					</f:facet>
+					
+					<h:outputText value="#{seat.available}" />
+					
+				</h:column>
+			</h:dataTable>
+
+		</h:panelGrid>
+	</h:form>
+	<h:form rendered="#{empty showDetailsBean.show}">
+		<h:outputLabel value="No show details found for the given ID."></h:outputLabel>
+	</h:form>
+</h:body>
+</html>
+
